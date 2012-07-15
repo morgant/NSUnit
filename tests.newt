@@ -1,0 +1,39 @@
+#!/usr/local/bin/newt
+
+Require("NSUnit");
+
+/**
+ * Rough testing of NSUnit.
+ */
+
+begin
+
+	NSUnit := GetGlobalVar('|NSUnit:makkintosshu|);
+	if NSUnit == NIL then Print("Couldn't get global var!\n");
+	
+	testCase := {
+		_proto: NSUnit.protoNSUnitTestCase
+	};
+
+	// protoNSUnitTestCase:AssertTrue() tests
+	Print("AssertTrue(true): ");
+	if testCase:AssertTrue(true) == true then Print("OK\n") else Print ("FAIL\n");
+	Print("AssertTrue(false): ");
+	if testCase:AssertTrue(nil) == nil then Print("OK\n") else Print("FAIL\n");
+	Print("AssertTrue(\"some string\"): ");
+	if testCase:AssertTrue("some string") == nil then Print("OK\n") else Print("FAIL\n");
+	
+	// protoNSUnitTestCase:AssertEquals() tests
+	Print("AssertEquals(1,1): ");
+	if testCase:AssertEquals(1, 1) == true then Print("OK\n") else Print("FAIL\n");
+	Print("AssertEquals(0,1): ");
+	if testCase:AssertEquals(0, 1) == nil then Print("OK\n") else Print("FAIL\n");
+	Print("AssertEquals(\"some string\",\"some string\"): ");
+	if testCase:AssertEquals("some string", "some string") == true then Print("OK\n") else Print("FAIL\n");
+	Print("AssertEquals(\"some string\",\"some other string\"): ");
+	if testCase:AssertEquals("some string", "some other string") == nil then Print("OK\n") else Print("FAIL\n");
+	
+	// protoNSUnitTestCase:Run() tests
+	//testCase:Run();
+	
+end;

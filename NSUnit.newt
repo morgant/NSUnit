@@ -1,0 +1,72 @@
+/**
+ * NSUnit (or NewtonScriptUnit) is a simple NewtonScript unit testing framework.
+ * 
+ * Based on <http://www.xprogramming.com/testfram.htm>
+ *          -and-
+ *          <http://junit.sourceforge.net/>
+ *          -and-
+ *          <http://www.phpunit.de/manual/current/en/index.html>
+ * 
+ * TO DO:
+ * 
+ *  - throw/catch exceptions for failed assertions
+ *  - 
+ */
+
+// I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
+DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
+	protoNSUnitTestCase : {
+			/**
+			 * SetUp() is called prior to each test case being run, so can be overridden
+			 * if you need to set up fixtures.
+			 */
+			SetUp: func () begin
+					
+				end,
+			/**
+			 * TearDown() is called after each test case is run, so should be overridden
+			 * to destroy anything done in SetUp().
+			 */
+			TearDown: func () begin
+					
+				end,
+			/**
+			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
+			 */
+			Run: func () begin
+					foreach slot, value deeply in self do begin
+						//Print(slot);
+						if (IsFunction(slot) and StrPos(slot, "Test", 0) == 0) then begin
+								//Print(" is a function");
+								self:SetUp();
+								// call the function in the slot here
+								self:TearDown();
+							end;
+						//Print("\n");
+					end
+				end,
+			/**
+			 * AssertEquals()
+			 * 
+			 * @param mixed expected	The value you expect the actual value to equal.
+			 * @param mixed actual		The actual value.
+			 */
+			AssertEquals: func (expected, actual) begin
+					if expected == actual then true else nil;
+				end,
+			/**
+			 * AssertTrue()
+			 * 
+			 * @param mixed condition	The value you expect to equal true.
+			 */
+			AssertTrue: func (condition) begin
+					if condition == true then true else nil;
+				end
+		},
+	protoNSUnitTestSuite : {
+			testCases: [],
+			Run: func () begin
+					foreach testCase in testCases do testCase:Run();
+				end
+		}
+});
