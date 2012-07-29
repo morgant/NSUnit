@@ -10,7 +10,7 @@
  * TO DO:
  * 
  *  - throw/catch exceptions for failed assertions
- *  - 
+ *  - count assertions, pass, and fail
  */
 
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
@@ -30,19 +30,27 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			TearDown: func () begin
 					
 				end,
+			TestNothing: func () begin
+					
+				end,
 			/**
 			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
 			 */
 			Run: func () begin
 					foreach slot, value deeply in self do begin
-						//Print(slot);
-						if (IsFunction(slot) and StrPos(slot, "Test", 0) == 0) then begin
-								//Print(" is a function");
+						local slotName := SPrintObject(slot);	// is this needed for NewtonOS? It is for NEWT/0!
+						if IsFunction(value) and BeginsWith(slotName, "Test") then begin
+								Print("Running '" & slotName & "' test case...\n");
+								Print("\tSetUp()... ");
 								self:SetUp();
-								// call the function in the slot here
+								Print("Done.\n");
+								Print("\t" & slotName & "()... ");
+								Perform(self, Intern(slotName), nil);
+								Print("Done.\n");
+								Print("\tTearDown()... ");
 								self:TearDown();
+								Print("Done.\n");
 							end;
-						//Print("\n");
 					end
 				end,
 			/**

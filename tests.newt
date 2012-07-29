@@ -34,6 +34,6 @@ begin
 	if testCase:AssertEquals("some string", "some other string") == nil then Print("OK\n") else Print("FAIL\n");
 	
 	// protoNSUnitTestCase:Run() tests
-	//testCase:Run();
+	testCase:Run();
 	
 end;
