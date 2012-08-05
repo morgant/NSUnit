@@ -16,6 +16,9 @@
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
 DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 	protoNSUnitTestCase : {
+			assertions: 0,
+			passes: 0,
+			fails: 0,
 			/**
 			 * SetUp() is called prior to each test case being run, so can be overridden
 			 * if you need to set up fixtures.
@@ -30,8 +33,8 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			TearDown: func () begin
 					
 				end,
-			TestNothing: func () begin
-					
+			TestNil: func () begin
+					self:AssertNil(nil);
 				end,
 			/**
 			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
@@ -45,13 +48,19 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 								self:SetUp();
 								Print("Done.\n");
 								Print("\t" & slotName & "()... ");
-								Perform(self, Intern(slotName), nil);
-								Print("Done.\n");
+								try
+									Perform(self, Intern(slotName), nil);
+									self.passes = self.passes + 1;
+									Print("Done.\n");
+								onexception |evt.ex.msg.assert| do begin
+									self.fails = self.fails + 1;
+									Print(CurrentException().message & "\n");
+								end;
 								Print("\tTearDown()... ");
 								self:TearDown();
 								Print("Done.\n");
 							end;
-					end
+					end;
 				end,
 			/**
 			 * AssertEquals()
@@ -60,7 +69,8 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 * @param mixed actual		The actual value.
 			 */
 			AssertEquals: func (expected, actual) begin
-					if expected == actual then true else nil;
+					self.assertions = self.assertions + 1;
+					if expected == actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
 				end,
 			/**
 			 * AssertTrue()
@@ -68,13 +78,34 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 * @param mixed condition	The value you expect to equal true.
 			 */
 			AssertTrue: func (condition) begin
-					if condition == true then true else nil;
+					self.assertions = self.assertions + 1;
+					if condition == true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
+				end,
+			/**
+			 * AssertNil()
+			 * 
+			 * @param mixed condition	The value you expect to equal nil.
+			 */
+			AssertNil: func (condition) begin
+					self.assertions = self.assertions + 1;
+					if condition == nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
 				end
 		},
 	protoNSUnitTestSuite : {
 			testCases: [],
+			assertions: 0,
+			passes: 0,
+			fails: 0,
 			Run: func () begin
-					foreach testCase in testCases do testCase:Run();
+					foreach testCase in testCases do begin
+							testCase:Run();
+							self.assertions = self.assertions + testCase.assertions;
+							self.passes = self.assertions + testCase.passes;
+							self.fails = self.fails + testCase.fails;
+						end;
+					Print("Assertions:" && self.assertions & "\n");
+					Print("Passing Tests:" && self.passes & "\n");
+					Print("Failing Tests:" && self.fails & "\n");
 				end
 		}
 });

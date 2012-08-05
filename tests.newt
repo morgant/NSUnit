@@ -17,23 +17,64 @@ begin
 
 	// protoNSUnitTestCase:AssertTrue() tests
 	Print("AssertTrue(true): ");
-	if testCase:AssertTrue(true) == true then Print("OK\n") else Print ("FAIL\n");
-	Print("AssertTrue(false): ");
-	if testCase:AssertTrue(nil) == nil then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertTrue(true);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print ("FAIL\n");
+	Print("AssertTrue(nil): ");
+	try
+		testCase:AssertTrue(nil);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertTrue(\"some string\"): ");
-	if testCase:AssertTrue("some string") == nil then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertTrue("some string");
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	
+	// protoNSUnitTestCase:AssertNil() tests
+	Print("AssertNil(nil): ");
+	try
+		testCase:AssertNil(nil);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print ("FAIL\n");
+	Print("AssertNil(true): ");
+	try
+		testCase:AssertNil(true);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertNil(\"some string\"): ");
+	try
+		testCase:AssertNil("some string");
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:AssertEquals() tests
 	Print("AssertEquals(1,1): ");
-	if testCase:AssertEquals(1, 1) == true then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertEquals(1, 1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertEquals(0,1): ");
-	if testCase:AssertEquals(0, 1) == nil then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertEquals(0, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertEquals(\"some string\",\"some string\"): ");
-	if testCase:AssertEquals("some string", "some string") == true then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertEquals("some string", "some string");
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertEquals(\"some string\",\"some other string\"): ");
-	if testCase:AssertEquals("some string", "some other string") == nil then Print("OK\n") else Print("FAIL\n");
+	try
+		testCase:AssertEquals("some string", "some other string");
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:Run() tests
 	testCase:Run();
+	Print("Assertions:" && testCase.assertions & "\n");
+	Print("Passing Tests:" && testCase.passes & "\n");
+	Print("Failing Tests:" && testCase.fails & "\n");
 	
 end;
