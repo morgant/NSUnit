@@ -9,8 +9,7 @@
  * 
  * TO DO:
  * 
- *  - throw/catch exceptions for failed assertions
- *  - count assertions, pass, and fail
+ *  - 
  */
 
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
@@ -50,10 +49,10 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 								Print("\t" & slotName & "()... ");
 								try
 									Perform(self, Intern(slotName), nil);
-									self.passes = self.passes + 1;
+									self.passes := self.passes + 1;
 									Print("Done.\n");
 								onexception |evt.ex.msg.assert| do begin
-									self.fails = self.fails + 1;
+									self.fails := self.fails + 1;
 									Print(CurrentException().message & "\n");
 								end;
 								Print("\tTearDown()... ");
@@ -69,7 +68,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 * @param mixed actual		The actual value.
 			 */
 			AssertEquals: func (expected, actual) begin
-					self.assertions = self.assertions + 1;
+					self.assertions := self.assertions + 1;
 					if expected == actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
 				end,
 			/**
@@ -78,7 +77,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 * @param mixed condition	The value you expect to equal true.
 			 */
 			AssertTrue: func (condition) begin
-					self.assertions = self.assertions + 1;
+					self.assertions := self.assertions + 1;
 					if condition == true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
 				end,
 			/**
@@ -87,7 +86,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 * @param mixed condition	The value you expect to equal nil.
 			 */
 			AssertNil: func (condition) begin
-					self.assertions = self.assertions + 1;
+					self.assertions := self.assertions + 1;
 					if condition == nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
 				end
 		},
@@ -99,9 +98,9 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			Run: func () begin
 					foreach testCase in testCases do begin
 							testCase:Run();
-							self.assertions = self.assertions + testCase.assertions;
-							self.passes = self.assertions + testCase.passes;
-							self.fails = self.fails + testCase.fails;
+							self.assertions := self.assertions + testCase.assertions;
+							self.passes := self.assertions + testCase.passes;
+							self.fails := self.fails + testCase.fails;
 						end;
 					Print("Assertions:" && self.assertions & "\n");
 					Print("Passing Tests:" && self.passes & "\n");
