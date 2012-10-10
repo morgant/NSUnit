@@ -71,6 +71,28 @@ begin
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
+	// protoNSUnitTestCase:AssertNotEquals() tests
+	Print("AssertNotEquals(1,1): ");
+	try
+		testCase:AssertNotEquals(1, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertNotEquals(0,1): ");
+	try
+		testCase:AssertNotEquals(0, 1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertNotEquals(\"some string\",\"some string\"): ");
+	try
+		testCase:AssertNotEquals("some string", "some string");
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertNotEquals(\"some string\",\"some other string\"): ");
+	try
+		testCase:AssertNotEquals("some string", "some other string");
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	
 	// protoNSUnitTestCase:Run() tests
 	testCase:Run();
 	Print("Assertions:" && testCase.assertions & "\n");

@@ -9,7 +9,10 @@
  * 
  * TO DO:
  * 
- *  - 
+ *  - Implement AssertGreaterThan(), AssertGreaterThanOrEqual(), AssertLessThanOrEqual(), 
+ *      and AssertLessThan()
+ *  - Implement AssertFrameContainsKey() (or whatever I decide to call it)
+ *  - Implement AssertStringBeginsWith(), AssertStringEndsWith()
  */
 
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
@@ -69,7 +72,27 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 */
 			AssertEquals: func (expected, actual) begin
 					self.assertions := self.assertions + 1;
-					if expected == actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+					if IsString(expected) and IsString(actual) then begin
+							if StrExactCompare(expected, actual) == 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+						end
+					else begin
+							if expected == actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+						end
+				end,
+			/**
+			 * AssertNotEquals()
+			 * 
+			 * @param mixed expected	The value you expect the actual value not to equal.
+			 * @param mixed actual		The actual value.
+			 */
+			AssertNotEquals: func (expected, actual) begin
+					self.assertions := self.assertions + 1;
+					if IsString(expected) and IsString(actual) then begin
+							if StrExactCompare(expected, actual) <> 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+						end
+					else begin
+							if expected <> actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+						end
 				end,
 			/**
 			 * AssertTrue()
