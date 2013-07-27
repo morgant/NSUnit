@@ -9,8 +9,6 @@
  * 
  * TO DO:
  * 
- *  - Implement AssertGreaterThan(), AssertGreaterThanOrEqual(), AssertLessThanOrEqual(), 
- *      and AssertLessThan()
  *  - Implement AssertFrameContainsKey() (or whatever I decide to call it)
  *  - Implement AssertStringBeginsWith(), AssertStringEndsWith()
  */
@@ -106,12 +104,52 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			/**
 			 * AssertNil()
 			 * 
-			 * @param mixed condition	The value you expect to equal nil.
+			 * @param mixed	condition	The value you expect to equal nil.
 			 */
 			AssertNil: func (condition) begin
 					self.assertions := self.assertions + 1;
 					if condition == nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
-				end
+				end,
+			/**
+			 * AssertGreaterThan()
+			 * 
+			 * @param int	expected	The value you expect the actual value to be greater than.
+			 * @param int	actual		The actual value.
+			 */
+			 AssertGreaterThan: func (expected, actual) begin
+			 		self.assertions := self.assertions + 1;
+			 		if actual > expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than '" & expected & "'.");
+			 	end,
+			 /**
+			  * AssertGreaterThanOrEqual()
+			  * 
+			  * @param int	expected	The value you expect the actual value to be greater than or equal to.
+			  * @param int	actual		The actual value.
+			  */
+			 AssertGreaterThanOrEqual: func (expected, actual) begin
+			 		self.assertions := self.assertions + 1;
+			 		if actual >= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than or equal to '" & expected & "'.");
+			 	end,
+			 /**
+			  * AssertLessThan()
+			  * 
+			  * @param int	expected	The value you expect the actual value to be less than.
+			  * @param int	actual		The actual value.
+			  */
+			 AssertLessThan: func (expected, actual) begin
+			 		self.assertions := self.assertions + 1;
+			 		if actual < expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than '" & expected & "'.");
+			 	end,
+			 /**
+			  * AssertLessThanOrEqual()
+			  * 
+			  * @param int	expected	The value you expect the actual value to be less than or equal to.
+			  * @param int	actual		The actual value.
+			  */
+			 AssertLessThanOrEqual: func (expected, actual) begin
+			 		self.assertions := self.assertions + 1;
+			 		if actual <= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than or equal to '" & expected & "'.");
+			 	end
 		},
 	protoNSUnitTestSuite : {
 			testCases: [],

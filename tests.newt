@@ -93,6 +93,74 @@ begin
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	
+	// protoNSUnitTestCase:AssertGreaterThan() tests
+	Print("AssertGreaterThan(1,0): ");
+	try
+		testCase:AssertGreaterThan(1, 0);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertGreaterThan(1,1): ");
+	try
+		testCase:AssertGreaterThan(1, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertGreaterThan(0,1): ");
+	try
+		testCase:AssertGreaterThan(0, 1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	
+	// protoNSUnitTestCase:AssertGreaterThanOrEqual() tests
+	Print("AssertGreaterThanOrEqual(1,0): ");
+	try
+		testCase:AssertGreaterThanOrEqual(1, 0);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertGreaterThanOrEqual(1,1): ");
+	try
+		testCase:AssertGreaterThanOrEqual(1,1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertGreaterThanOrEqual(0,1): ");
+	try
+		testCase:AssertGreaterThanOrEqual(0, 1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	
+	// protoNSUnitTestCase:AssertLessThan() tests
+	Print("AssertLessThan(1,0): ");
+	try
+		testCase:AssertLessThan(1, 0);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertLessThan(1,1): ");
+	try
+		testCase:AssertLessThan(1, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	Print("AssertLessThan(0,1): ");
+	try
+		testCase:AssertLessThan(0, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	
+	// protoNSUnitTestCase:AssertLessThanOrEqual() tests
+	Print("AssertLessThanOrEqual(1,0): ");
+	try
+		testCase:AssertLessThanOrEqual(1, 0);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertLessThanOrEqual(1,1): ");
+	try
+		testCase:AssertLessThanOrEqual(1, 1);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertLessThanOrEqual(0, 1): ");
+	try
+		testCase:AssertLessThanOrEqual(0, 1);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	
 	// protoNSUnitTestCase:Run() tests
 	testCase:Run();
 	Print("Assertions:" && testCase.assertions & "\n");
