@@ -161,6 +161,20 @@ begin
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
+	// protoNSUtitTestCase:AssertFrameContainsSlot() tests
+	testFrame := { someSlot: "something" };
+	Print("testFrame: { someSlot: \"something\" }\n");
+	Print("AssertFrameContainsSlot(testFrame 'someSlot): ");
+	try
+		testCase:AssertFrameContainsSlot(testFrame, 'someSlot);
+		Print("OK\n");
+	onexception |evt.ex.msg.assert| do Print("FAIL\n");
+	Print("AssertFrameContainsSlot(testFrame 'anotherSlot): ");
+	try
+		testCase:AssertFrameContainsSlot(testFrame, 'anotherSlot);
+		Print("FAIL\n");
+	onexception |evt.ex.msg.assert| do Print("OK\n");
+	
 	// protoNSUnitTestCase:Run() tests
 	testCase:Run();
 	Print("Assertions:" && testCase.assertions & "\n");

@@ -9,7 +9,6 @@
  * 
  * TO DO:
  * 
- *  - Implement AssertFrameContainsKey() (or whatever I decide to call it)
  *  - Implement AssertStringBeginsWith(), AssertStringEndsWith()
  */
 
@@ -149,6 +148,16 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 AssertLessThanOrEqual: func (expected, actual) begin
 			 		self.assertions := self.assertions + 1;
 			 		if actual <= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than or equal to '" & expected & "'.");
+			 	end,
+			 /**
+			  * AssertFrameContainsSlot()
+			  * 
+			  * @param int	frame	The frame you expect to contain the slot.
+			  * @param int	slot	The symbol naming the slot which you expect to exist in the frame.
+			  */
+			 AssertFrameContainsSlot: func (frame, slot) begin
+			 		self.assertions := self.assertions + 1;
+			 		if HasVariable(frame, slot) then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & frame & "' contains the slot '" & slot & "'.");
 			 	end
 		},
 	protoNSUnitTestSuite : {
