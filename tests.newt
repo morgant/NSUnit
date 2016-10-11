@@ -11,172 +11,177 @@ begin
 	NSUnit := GetGlobalVar('|NSUnit:makkintosshu|);
 	if NSUnit == NIL then Print("Couldn't get global var!\n");
 	
-	testCase := {
-		_proto: NSUnit.protoNSUnitTestCase
-	};
-
 	// protoNSUnitTestCase:AssertTrue() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertTrue(true): ");
 	try
-		testCase:AssertTrue(true);
+		playground.testCase:AssertTrue(true);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print ("FAIL\n");
 	Print("AssertTrue(nil): ");
 	try
-		testCase:AssertTrue(nil);
+		playground.testCase:AssertTrue(nil);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertTrue(\"some string\"): ");
 	try
-		testCase:AssertTrue("some string");
+		playground.testCase:AssertTrue("some string");
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:AssertNil() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertNil(nil): ");
 	try
-		testCase:AssertNil(nil);
+		playground.testCase:AssertNil(nil);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print ("FAIL\n");
 	Print("AssertNil(true): ");
 	try
-		testCase:AssertNil(true);
+		playground.testCase:AssertNil(true);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertNil(\"some string\"): ");
 	try
-		testCase:AssertNil("some string");
+		playground.testCase:AssertNil("some string");
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:AssertEquals() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertEquals(1,1): ");
 	try
-		testCase:AssertEquals(1, 1);
+		playground.testCase:AssertEquals(1, 1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertEquals(0,1): ");
 	try
-		testCase:AssertEquals(0, 1);
+		playground.testCase:AssertEquals(0, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertEquals(\"some string\",\"some string\"): ");
 	try
-		testCase:AssertEquals("some string", "some string");
+		playground.testCase:AssertEquals("some string", "some string");
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertEquals(\"some string\",\"some other string\"): ");
 	try
-		testCase:AssertEquals("some string", "some other string");
+		playground.testCase:AssertEquals("some string", "some other string");
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:AssertNotEquals() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertNotEquals(1,1): ");
 	try
-		testCase:AssertNotEquals(1, 1);
+		playground.testCase:AssertNotEquals(1, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertNotEquals(0,1): ");
 	try
-		testCase:AssertNotEquals(0, 1);
+		playground.testCase:AssertNotEquals(0, 1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertNotEquals(\"some string\",\"some string\"): ");
 	try
-		testCase:AssertNotEquals("some string", "some string");
+		playground.testCase:AssertNotEquals("some string", "some string");
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertNotEquals(\"some string\",\"some other string\"): ");
 	try
-		testCase:AssertNotEquals("some string", "some other string");
+		playground.testCase:AssertNotEquals("some string", "some other string");
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	
 	// protoNSUnitTestCase:AssertGreaterThan() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertGreaterThan(1,0): ");
 	try
-		testCase:AssertGreaterThan(1, 0);
+		playground.testCase:AssertGreaterThan(1, 0);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertGreaterThan(1,1): ");
 	try
-		testCase:AssertGreaterThan(1, 1);
+		playground.testCase:AssertGreaterThan(1, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertGreaterThan(0,1): ");
 	try
-		testCase:AssertGreaterThan(0, 1);
+		playground.testCase:AssertGreaterThan(0, 1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	
 	// protoNSUnitTestCase:AssertGreaterThanOrEqual() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertGreaterThanOrEqual(1,0): ");
 	try
-		testCase:AssertGreaterThanOrEqual(1, 0);
+		playground.testCase:AssertGreaterThanOrEqual(1, 0);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertGreaterThanOrEqual(1,1): ");
 	try
-		testCase:AssertGreaterThanOrEqual(1,1);
+		playground.testCase:AssertGreaterThanOrEqual(1,1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertGreaterThanOrEqual(0,1): ");
 	try
-		testCase:AssertGreaterThanOrEqual(0, 1);
+		playground.testCase:AssertGreaterThanOrEqual(0, 1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	
 	// protoNSUnitTestCase:AssertLessThan() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertLessThan(1,0): ");
 	try
-		testCase:AssertLessThan(1, 0);
+		playground.testCase:AssertLessThan(1, 0);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertLessThan(1,1): ");
 	try
-		testCase:AssertLessThan(1, 1);
+		playground.testCase:AssertLessThan(1, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	Print("AssertLessThan(0,1): ");
 	try
-		testCase:AssertLessThan(0, 1);
+		playground.testCase:AssertLessThan(0, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:AssertLessThanOrEqual() tests
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
 	Print("AssertLessThanOrEqual(1,0): ");
 	try
-		testCase:AssertLessThanOrEqual(1, 0);
+		playground.testCase:AssertLessThanOrEqual(1, 0);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertLessThanOrEqual(1,1): ");
 	try
-		testCase:AssertLessThanOrEqual(1, 1);
+		playground.testCase:AssertLessThanOrEqual(1, 1);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertLessThanOrEqual(0, 1): ");
 	try
-		testCase:AssertLessThanOrEqual(0, 1);
+		playground.testCase:AssertLessThanOrEqual(0, 1);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUtitTestCase:AssertFrameContainsSlot() tests
-	testFrame := { someSlot: "something" };
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase }, testFrame: { someSlot: "something" } };
 	Print("testFrame: { someSlot: \"something\" }\n");
 	Print("AssertFrameContainsSlot(testFrame 'someSlot): ");
 	try
-		testCase:AssertFrameContainsSlot(testFrame, 'someSlot);
+		playground.testCase:AssertFrameContainsSlot(playground.testFrame, 'someSlot);
 		Print("OK\n");
 	onexception |evt.ex.msg.assert| do Print("FAIL\n");
 	Print("AssertFrameContainsSlot(testFrame 'anotherSlot): ");
 	try
-		testCase:AssertFrameContainsSlot(testFrame, 'anotherSlot);
+		playground.testCase:AssertFrameContainsSlot(playground.testFrame, 'anotherSlot);
 		Print("FAIL\n");
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:Run() tests
-	testCase:Run();
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
+	playground.testCase:Run();
 	Print("Assertions:" && testCase.assertions & "\n");
 	Print("Passing Tests:" && testCase.passes & "\n");
 	Print("Failing Tests:" && testCase.fails & "\n");
