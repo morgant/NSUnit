@@ -180,10 +180,20 @@ begin
 	onexception |evt.ex.msg.assert| do Print("OK\n");
 	
 	// protoNSUnitTestCase:Run() tests
-	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self:AssertNil(nil); end } };
+	Print("testCase { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self.AssertNil(nil); end }\n");
+	Print("testCase:Run() passing test: ");
 	playground.testCase:Run();
-	Print("Assertions:" && testCase.assertions & "\n");
-	Print("Passing Tests:" && testCase.passes & "\n");
-	Print("Failing Tests:" && testCase.fails & "\n");
-	
+	if playground.testCase.assertions = 1 and playground.testCase.passes = 1 and playground.testCase.fails = 0 then Print("OK\n") else Print("FAIL\n");
+	Print("Assertions:" && playground.testCase.assertions & "\n");
+	Print("Passing Tests:" && playground.testCase.passes & "\n");
+	Print("Failing Tests:" && playground.testCase.fails & "\n");
+	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end} };
+	Print("testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end }\n");
+	Print("testCase:Run() failing test: ");
+	playground.testCase:Run();
+	if playground.testCase.assertions = 1 and playground.testCase.passes = 0 and playground.testCase.fails = 1 then Print("OK\n") else Print("FAIL\n");
+	Print("Assertions:" && playground.testCase.assertions & "\n");
+	Print("Passing Tests:" && playground.testCase.passes & "\n");
+	Print("Failing Tests:" && playground.testCase.fails & "\n");
 end;
