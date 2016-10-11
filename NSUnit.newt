@@ -14,7 +14,7 @@
 
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
 DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
-	protoNSUnitTestCase : {
+	protoNSUnitTestCase: {
 			assertions: 0,
 			passes: 0,
 			fails: 0,
@@ -32,9 +32,11 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			TearDown: func () begin
 					
 				end,
+			/*
 			TestNil: func () begin
 					self:AssertNil(nil);
 				end,
+			*/
 			/**
 			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
 			 */
@@ -48,12 +50,12 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 								Print("Done.\n");
 								Print("\t" & slotName & "()... ");
 								try
-									Perform(self, Intern(slotName), nil);
+									ProtoPerform(self, Intern(slotName), nil);
 									self.passes := self.passes + 1;
-									Print("Done.\n");
+									Print("PASS\n");
 								onexception |evt.ex.msg.assert| do begin
 									self.fails := self.fails + 1;
-									Print(CurrentException().message & "\n");
+									Print("FAIL:" && CurrentException().message & "\n");
 								end;
 								Print("\tTearDown()... ");
 								self:TearDown();
@@ -70,10 +72,10 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			AssertEquals: func (expected, actual) begin
 					self.assertions := self.assertions + 1;
 					if IsString(expected) and IsString(actual) then begin
-							if StrExactCompare(expected, actual) == 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+							if StrExactCompare(expected, actual) = 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
 						end
 					else begin
-							if expected == actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+							if expected = actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
 						end
 				end,
 			/**
@@ -98,7 +100,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 */
 			AssertTrue: func (condition) begin
 					self.assertions := self.assertions + 1;
-					if condition == true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
+					if condition = true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
 				end,
 			/**
 			 * AssertNil()
@@ -107,7 +109,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 */
 			AssertNil: func (condition) begin
 					self.assertions := self.assertions + 1;
-					if condition == nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
+					if condition = nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
 				end,
 			/**
 			 * AssertGreaterThan()
@@ -160,7 +162,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			 		if HasVariable(frame, slot) then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & frame & "' contains the slot '" & slot & "'.");
 			 	end
 		},
-	protoNSUnitTestSuite : {
+	protoNSUnitTestSuite: {
 			testCases: [],
 			assertions: 0,
 			passes: 0,
