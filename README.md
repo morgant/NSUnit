@@ -16,6 +16,33 @@ It is currently being developed with [NEWT/0](http://gnue.github.com/NEWT0/), bu
 
 THIS IS STILL IN DEVELOPMENT AND IS NOT FULLY FUNCTIONAL OR STABLE.
 
+USAGE
+-----
+
+	// If using NEWT/0
+	Require("NSUnit");
+	
+	NSUnit := GetGlobalVar('|NSUnit:makkintosshu|);
+	
+	// Build out a test suite
+	myTestSuite := {
+		_proto: protoNSUnitTestSuite,
+		// Create one or more test cases
+		testCases: [
+			{
+				_proto: protoNSUnitTestCase,
+				// Create any number of methods that start with the word "Test"
+				TestSomethingNil: func () begin
+						# do whatever you need to do, calling various Assert*() methods provided by NSUnit
+						self:AssertNil(nil);
+					end
+			}
+		]
+	};
+	
+	// Run all the tests in the test suite
+	myTestSuite:Run();
+
 LICENSE
 -------
 
