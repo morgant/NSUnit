@@ -41,7 +41,7 @@ USAGE
 	};
 	
 	// Run all the tests in the test suite
-	myTestSuite:Run();
+	myTestSuite:Run(true);
 
 LICENSE
 -------

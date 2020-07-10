@@ -184,29 +184,17 @@ begin
 	
 	// protoNSUnitTestCase:Run() tests
 	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase } };
-	Print("testCase { _proto: NSUnit.protoNSUnitTestCase }\n");
 	Print("testCase:Run() no tests: ");
-	playground.testCase:Run();
+	playground.testCase:Run(nil);
 	if playground.testCase.assertions = 0 and playground.testCase.passes = 0 and playground.testCase.fails = 0 then begin passes := passes + 1; Print("PASS\n"); end; else begin fails := fails + 1; Print("FAIL\n"); end;
-	Print("Assertions:" && playground.testCase.assertions & "\n");
-	Print("Passing Tests:" && playground.testCase.passes & "\n");
-	Print("Failing Tests:" && playground.testCase.fails & "\n");
 	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self:AssertNil(nil); end } };
-	Print("testCase { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self.AssertNil(nil); end }\n");
 	Print("testCase:Run() passing test: ");
-	playground.testCase:Run();
+	playground.testCase:Run(nil);
 	if playground.testCase.assertions = 1 and playground.testCase.passes = 1 and playground.testCase.fails = 0 then begin passes := passes + 1; Print("PASS\n") end; else begin fails := fails + 1; Print("FAIL\n"); end;
-	Print("Assertions:" && playground.testCase.assertions & "\n");
-	Print("Passing Tests:" && playground.testCase.passes & "\n");
-	Print("Failing Tests:" && playground.testCase.fails & "\n");
 	playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end} };
-	Print("testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end }\n");
 	Print("testCase:Run() failing test: ");
-	playground.testCase:Run();
+	playground.testCase:Run(nil);
 	if playground.testCase.assertions = 1 and playground.testCase.passes = 0 and playground.testCase.fails = 1 then begin passes := passes + 1; Print("PASS\n") end; else begin fails := fails + 1; Print("FAIL\n"); end;
-	Print("Assertions:" && playground.testCase.assertions & "\n");
-	Print("Passing Tests:" && playground.testCase.passes & "\n");
-	Print("Failing Tests:" && playground.testCase.fails & "\n");
 	
 	// Summary
 	Print("\nPassed:" && passes & "\n");

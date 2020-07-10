@@ -40,26 +40,26 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			/**
 			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
 			 */
-			Run: func () begin
+			Run: func (verbose) begin
 					foreach slot, value deeply in self do begin
 						local slotName := SPrintObject(slot);	// is this needed for NewtonOS? It is for NEWT/0!
 						if IsFunction(value) and BeginsWith(slotName, "Test") then begin
-								Print("Running '" & slotName & "' test case...\n");
-								Print("\tSetUp()... ");
+								if verbose then Print("Running '" & slotName & "' test case...\n");
+								if verbose then Print("\tSetUp()... ");
 								self:SetUp();
-								Print("Done.\n");
-								Print("\t" & slotName & "()... ");
+								if verbose then Print("Done.\n");
+								if verbose then Print("\t" & slotName & "()... ");
 								try
 									ProtoPerform(self, Intern(slotName), nil);
 									self.passes := self.passes + 1;
-									Print("PASS\n");
+									if verbose then Print("PASS\n");
 								onexception |evt.ex.msg.assert| do begin
 									self.fails := self.fails + 1;
-									Print("FAIL:" && CurrentException().message & "\n");
+									if verbose then Print("FAIL:" && CurrentException().message & "\n");
 								end;
-								Print("\tTearDown()... ");
+								if verbose then Print("\tTearDown()... ");
 								self:TearDown();
-								Print("Done.\n");
+								if verbose then Print("Done.\n");
 							end;
 					end;
 				end,
@@ -167,16 +167,18 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 			assertions: 0,
 			passes: 0,
 			fails: 0,
-			Run: func () begin
+			Run: func (verbose) begin
 					foreach testCase in testCases do begin
-							testCase:Run();
+							testCase:Run(verbose);
 							self.assertions := self.assertions + testCase.assertions;
 							self.passes := self.passes + testCase.passes;
 							self.fails := self.fails + testCase.fails;
 						end;
-					Print("Assertions:" && self.assertions & "\n");
-					Print("Passing Tests:" && self.passes & "\n");
-					Print("Failing Tests:" && self.fails & "\n");
+					if verbose then begin
+						Print("Assertions:" && self.assertions & "\n");
+						Print("Passing Tests:" && self.passes & "\n");
+						Print("Failing Tests:" && self.fails & "\n");
+					end;
 				end
 		}
 });
