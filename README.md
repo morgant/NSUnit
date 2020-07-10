@@ -26,14 +26,14 @@ USAGE
 	
 	// Build out a test suite
 	myTestSuite := {
-		_proto: protoNSUnitTestSuite,
+		_proto: NSUnit.protoNSUnitTestSuite,
 		// Create one or more test cases
 		testCases: [
 			{
-				_proto: protoNSUnitTestCase,
+				_proto: NSUnit.protoNSUnitTestCase,
 				// Create any number of methods that start with the word "Test"
 				TestSomethingNil: func () begin
-						# do whatever you need to do, calling various Assert*() methods provided by NSUnit
+						// do whatever you need to do, calling various Assert*() methods provided by NSUnit
 						self:AssertNil(nil);
 					end
 			}
