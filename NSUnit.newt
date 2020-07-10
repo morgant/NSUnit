@@ -171,7 +171,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
 					foreach testCase in testCases do begin
 							testCase:Run();
 							self.assertions := self.assertions + testCase.assertions;
-							self.passes := self.assertions + testCase.passes;
+							self.passes := self.passes + testCase.passes;
 							self.fails := self.fails + testCase.fails;
 						end;
 					Print("Assertions:" && self.assertions & "\n");
