@@ -39,8 +39,12 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
       */
       /**
        * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
+       *
+       * @return bool Returns true if all tests passed, otherwise nil.
        */
+
       Run: func () begin
+          local success := true;
           foreach slot, value deeply in self do begin
             local slotName := SPrintObject(slot);  // is this needed for NewtonOS? It is for NEWT/0!
             if IsFunction(value) and BeginsWith(slotName, "Test") then begin
@@ -54,6 +58,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
                   self.passes := self.passes + 1;
                   Print("PASS\n");
                 onexception |evt.ex.msg.assert| do begin
+                  success := nil;
                   self.fails := self.fails + 1;
                   Print("FAIL:" && CurrentException().message & "\n");
                 end;
@@ -62,6 +67,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
                 Print("Done.\n");
               end;
           end;
+          return success;
         end,
       /**
        * AssertEquals()
@@ -167,9 +173,15 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
       assertions: 0,
       passes: 0,
       fails: 0,
+      /**
+       * Run()
+       *
+       * @return bool Returns true if all tests passed, otherwise nil.
+       */
       Run: func () begin
+          local success := true;
           foreach testCase in testCases do begin
-              testCase:Run();
+              if not testCase:Run() then success = nil;
               self.assertions := self.assertions + testCase.assertions;
               self.passes := self.passes + testCase.passes;
               self.fails := self.fails + testCase.fails;
@@ -177,6 +189,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
           Print("Assertions:" && self.assertions & "\n");
           Print("Passing Tests:" && self.passes & "\n");
           Print("Failing Tests:" && self.fails & "\n");
+          return success;
         end
     }
 });
