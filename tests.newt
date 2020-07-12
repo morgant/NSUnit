@@ -202,4 +202,5 @@ begin
   // Summary
   Print("\nPassed:" && passes & "\n");
   Print("Failed:" && fails & "\n");
+  if fails > 0 then Exit(1);
 end;
