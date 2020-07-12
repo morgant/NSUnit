@@ -1,182 +1,182 @@
 /**
  * NSUnit (or NewtonScriptUnit) is a simple NewtonScript unit testing framework.
- * 
+ *
  * Based on <http://www.xprogramming.com/testfram.htm>
  *          -and-
  *          <http://junit.sourceforge.net/>
  *          -and-
  *          <http://www.phpunit.de/manual/current/en/index.html>
- * 
+ *
  * TO DO:
- * 
+ *
  *  - Implement AssertStringBeginsWith(), AssertStringEndsWith()
  */
 
 // I'd prefer to use DeclareUnit(), like NHttpLib, but it's not yet implemented in NEWT/0
 DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
-	protoNSUnitTestCase: {
-			assertions: 0,
-			passes: 0,
-			fails: 0,
-			/**
-			 * SetUp() is called prior to each test case being run, so can be overridden
-			 * if you need to set up fixtures.
-			 */
-			SetUp: func () begin
-					
-				end,
-			/**
-			 * TearDown() is called after each test case is run, so should be overridden
-			 * to destroy anything done in SetUp().
-			 */
-			TearDown: func () begin
-					
-				end,
-			/*
-			TestNil: func () begin
-					self:AssertNil(nil);
-				end,
-			*/
-			/**
-			 * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
-			 */
-			Run: func () begin
-					foreach slot, value deeply in self do begin
-						local slotName := SPrintObject(slot);	// is this needed for NewtonOS? It is for NEWT/0!
-						if IsFunction(value) and BeginsWith(slotName, "Test") then begin
-								Print("Running '" & slotName & "' test case...\n");
-								Print("\tSetUp()... ");
-								self:SetUp();
-								Print("Done.\n");
-								Print("\t" & slotName & "()... ");
-								try
-									ProtoPerform(self, Intern(slotName), nil);
-									self.passes := self.passes + 1;
-									Print("PASS\n");
-								onexception |evt.ex.msg.assert| do begin
-									self.fails := self.fails + 1;
-									Print("FAIL:" && CurrentException().message & "\n");
-								end;
-								Print("\tTearDown()... ");
-								self:TearDown();
-								Print("Done.\n");
-							end;
-					end;
-				end,
-			/**
-			 * AssertEquals()
-			 * 
-			 * @param mixed expected	The value you expect the actual value to equal.
-			 * @param mixed actual		The actual value.
-			 */
-			AssertEquals: func (expected, actual) begin
-					self.assertions := self.assertions + 1;
-					if IsString(expected) and IsString(actual) then begin
-							if StrExactCompare(expected, actual) = 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
-						end
-					else begin
-							if expected = actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
-						end
-				end,
-			/**
-			 * AssertNotEquals()
-			 * 
-			 * @param mixed expected	The value you expect the actual value not to equal.
-			 * @param mixed actual		The actual value.
-			 */
-			AssertNotEquals: func (expected, actual) begin
-					self.assertions := self.assertions + 1;
-					if IsString(expected) and IsString(actual) then begin
-							if StrExactCompare(expected, actual) <> 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
-						end
-					else begin
-							if expected <> actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
-						end
-				end,
-			/**
-			 * AssertTrue()
-			 * 
-			 * @param mixed condition	The value you expect to equal true.
-			 */
-			AssertTrue: func (condition) begin
-					self.assertions := self.assertions + 1;
-					if condition = true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
-				end,
-			/**
-			 * AssertNil()
-			 * 
-			 * @param mixed	condition	The value you expect to equal nil.
-			 */
-			AssertNil: func (condition) begin
-					self.assertions := self.assertions + 1;
-					if condition = nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
-				end,
-			/**
-			 * AssertGreaterThan()
-			 * 
-			 * @param int	expected	The value you expect the actual value to be greater than.
-			 * @param int	actual		The actual value.
-			 */
-			 AssertGreaterThan: func (expected, actual) begin
-			 		self.assertions := self.assertions + 1;
-			 		if actual > expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than '" & expected & "'.");
-			 	end,
-			 /**
-			  * AssertGreaterThanOrEqual()
-			  * 
-			  * @param int	expected	The value you expect the actual value to be greater than or equal to.
-			  * @param int	actual		The actual value.
-			  */
-			 AssertGreaterThanOrEqual: func (expected, actual) begin
-			 		self.assertions := self.assertions + 1;
-			 		if actual >= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than or equal to '" & expected & "'.");
-			 	end,
-			 /**
-			  * AssertLessThan()
-			  * 
-			  * @param int	expected	The value you expect the actual value to be less than.
-			  * @param int	actual		The actual value.
-			  */
-			 AssertLessThan: func (expected, actual) begin
-			 		self.assertions := self.assertions + 1;
-			 		if actual < expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than '" & expected & "'.");
-			 	end,
-			 /**
-			  * AssertLessThanOrEqual()
-			  * 
-			  * @param int	expected	The value you expect the actual value to be less than or equal to.
-			  * @param int	actual		The actual value.
-			  */
-			 AssertLessThanOrEqual: func (expected, actual) begin
-			 		self.assertions := self.assertions + 1;
-			 		if actual <= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than or equal to '" & expected & "'.");
-			 	end,
-			 /**
-			  * AssertFrameContainsSlot()
-			  * 
-			  * @param int	frame	The frame you expect to contain the slot.
-			  * @param int	slot	The symbol naming the slot which you expect to exist in the frame.
-			  */
-			 AssertFrameContainsSlot: func (frame, slot) begin
-			 		self.assertions := self.assertions + 1;
-			 		if HasVariable(frame, slot) then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & frame & "' contains the slot '" & slot & "'.");
-			 	end
-		},
-	protoNSUnitTestSuite: {
-			testCases: [],
-			assertions: 0,
-			passes: 0,
-			fails: 0,
-			Run: func () begin
-					foreach testCase in testCases do begin
-							testCase:Run();
-							self.assertions := self.assertions + testCase.assertions;
-							self.passes := self.passes + testCase.passes;
-							self.fails := self.fails + testCase.fails;
-						end;
-					Print("Assertions:" && self.assertions & "\n");
-					Print("Passing Tests:" && self.passes & "\n");
-					Print("Failing Tests:" && self.fails & "\n");
-				end
-		}
+  protoNSUnitTestCase: {
+      assertions: 0,
+      passes: 0,
+      fails: 0,
+      /**
+       * SetUp() is called prior to each test case being run, so can be overridden
+       * if you need to set up fixtures.
+       */
+      SetUp: func () begin
+          
+        end,
+      /**
+       * TearDown() is called after each test case is run, so should be overridden
+       * to destroy anything done in SetUp().
+       */
+      TearDown: func () begin
+          
+        end,
+      /*
+      TestNil: func () begin
+          self:AssertNil(nil);
+        end,
+      */
+      /**
+       * Run() runs all tests (any function named Test*) in an NSUnitTestCase.
+       */
+      Run: func () begin
+          foreach slot, value deeply in self do begin
+            local slotName := SPrintObject(slot);  // is this needed for NewtonOS? It is for NEWT/0!
+            if IsFunction(value) and BeginsWith(slotName, "Test") then begin
+                Print("Running '" & slotName & "' test case...\n");
+                Print("\tSetUp()... ");
+                self:SetUp();
+                Print("Done.\n");
+                Print("\t" & slotName & "()... ");
+                try
+                  ProtoPerform(self, Intern(slotName), nil);
+                  self.passes := self.passes + 1;
+                  Print("PASS\n");
+                onexception |evt.ex.msg.assert| do begin
+                  self.fails := self.fails + 1;
+                  Print("FAIL:" && CurrentException().message & "\n");
+                end;
+                Print("\tTearDown()... ");
+                self:TearDown();
+                Print("Done.\n");
+              end;
+          end;
+        end,
+      /**
+       * AssertEquals()
+       *
+       * @param mixed expected  The value you expect the actual value to equal.
+       * @param mixed actual    The actual value.
+       */
+      AssertEquals: func (expected, actual) begin
+          self.assertions := self.assertions + 1;
+          if IsString(expected) and IsString(actual) then begin
+              if StrExactCompare(expected, actual) = 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+            end
+          else begin
+              if expected = actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+            end
+        end,
+      /**
+       * AssertNotEquals()
+       *
+       * @param mixed expected  The value you expect the actual value not to equal.
+       * @param mixed actual    The actual value.
+       */
+      AssertNotEquals: func (expected, actual) begin
+          self.assertions := self.assertions + 1;
+          if IsString(expected) and IsString(actual) then begin
+              if StrExactCompare(expected, actual) <> 0 then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+            end
+          else begin
+              if expected <> actual then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' equals '" & expected & "'.");
+            end
+        end,
+      /**
+       * AssertTrue()
+       *
+       * @param mixed condition  The value you expect to equal true.
+       */
+      AssertTrue: func (condition) begin
+          self.assertions := self.assertions + 1;
+          if condition = true then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals true.");
+        end,
+      /**
+       * AssertNil()
+       *
+       * @param mixed  condition  The value you expect to equal nil.
+       */
+      AssertNil: func (condition) begin
+          self.assertions := self.assertions + 1;
+          if condition = nil then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & condition & "' equals nil.");
+        end,
+      /**
+       * AssertGreaterThan()
+       *
+       * @param int  expected  The value you expect the actual value to be greater than.
+       * @param int  actual    The actual value.
+       */
+       AssertGreaterThan: func (expected, actual) begin
+           self.assertions := self.assertions + 1;
+           if actual > expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than '" & expected & "'.");
+         end,
+       /**
+        * AssertGreaterThanOrEqual()
+        *
+        * @param int  expected  The value you expect the actual value to be greater than or equal to.
+        * @param int  actual    The actual value.
+        */
+       AssertGreaterThanOrEqual: func (expected, actual) begin
+           self.assertions := self.assertions + 1;
+           if actual >= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is greater than or equal to '" & expected & "'.");
+         end,
+       /**
+        * AssertLessThan()
+        *
+        * @param int  expected  The value you expect the actual value to be less than.
+        * @param int  actual    The actual value.
+        */
+       AssertLessThan: func (expected, actual) begin
+           self.assertions := self.assertions + 1;
+           if actual < expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than '" & expected & "'.");
+         end,
+       /**
+        * AssertLessThanOrEqual()
+        *
+        * @param int  expected  The value you expect the actual value to be less than or equal to.
+        * @param int  actual    The actual value.
+        */
+       AssertLessThanOrEqual: func (expected, actual) begin
+           self.assertions := self.assertions + 1;
+           if actual <= expected then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & actual & "' is less than or equal to '" & expected & "'.");
+         end,
+       /**
+        * AssertFrameContainsSlot()
+        *
+        * @param int  frame  The frame you expect to contain the slot.
+        * @param int  slot  The symbol naming the slot which you expect to exist in the frame.
+        */
+       AssertFrameContainsSlot: func (frame, slot) begin
+           self.assertions := self.assertions + 1;
+           if HasVariable(frame, slot) then nil else Throw('|evt.ex.msg.assert|, "Failed asserting that '" & frame & "' contains the slot '" & slot & "'.");
+         end
+    },
+  protoNSUnitTestSuite: {
+      testCases: [],
+      assertions: 0,
+      passes: 0,
+      fails: 0,
+      Run: func () begin
+          foreach testCase in testCases do begin
+              testCase:Run();
+              self.assertions := self.assertions + testCase.assertions;
+              self.passes := self.passes + testCase.passes;
+              self.fails := self.fails + testCase.fails;
+            end;
+          Print("Assertions:" && self.assertions & "\n");
+          Print("Passing Tests:" && self.passes & "\n");
+          Print("Failing Tests:" && self.fails & "\n");
+        end
+    }
 });
