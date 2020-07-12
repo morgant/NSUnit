@@ -8,7 +8,7 @@ OVERVIEW
 
 NSUnit is a basic [xUnit](http://en.wikipedia.org/wiki/XUnit) unit testing framework for the NewtonScript language, based on the following implementations:
 
-* [Simple Smalltalk Testing: With Patterns](http://www.xprogramming.com/testfram.htm) by Kent Beck
+* [Simple Smalltalk Testing: With Patterns](http://web.archive.org/web/20120204060045/http://www.xprogramming.com/testfram.htm) by Kent Beck
 * [JUnit](http://junit.sourceforge.net/)
 * [PHPUnit](http://www.phpunit.de/manual/current/en/index.html)
 
