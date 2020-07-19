@@ -176,7 +176,7 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
       Run: func () begin
           local success := true;
           foreach testCase in testCases do begin
-              if not testCase:Run() then success = nil;
+              if not testCase:Run() then success := nil;
               self.assertions := self.assertions + testCase.assertions;
               self.passes := self.passes + testCase.passes;
               self.fails := self.fails + testCase.fails;
