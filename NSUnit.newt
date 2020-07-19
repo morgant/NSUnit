@@ -48,11 +48,8 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
           foreach slot, value deeply in self do begin
             local slotName := SPrintObject(slot);  // is this needed for NewtonOS? It is for NEWT/0!
             if IsFunction(value) and BeginsWith(slotName, "Test") then begin
-                Print("Running '" & slotName & "' test case...\n");
-                Print("\tSetUp()... ");
                 self:SetUp();
-                Print("Done.\n");
-                Print("\t" & slotName & "()... ");
+                Print(slotName & "()... ");
                 try
                   ProtoPerform(self, Intern(slotName), nil);
                   self.passes := self.passes + 1;
@@ -60,11 +57,9 @@ DefGlobalVar('|NSUnit:makkintosshu|, NSUnit := {
                 onexception |evt.ex.msg.assert| do begin
                   success := nil;
                   self.fails := self.fails + 1;
-                  Print("FAIL:" && CurrentException().message & "\n");
+                  Print("FAIL:\n\t" & CurrentException().message & "\n");
                 end;
-                Print("\tTearDown()... ");
                 self:TearDown();
-                Print("Done.\n");
               end;
           end;
           return success;
