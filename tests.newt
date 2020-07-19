@@ -190,14 +190,169 @@ begin
   if result = true and playground.testCase.assertions = 0 and playground.testCase.passes = 0 and playground.testCase.fails = 0 then begin passes := passes + 1; Print("PASS\n"); end; else begin fails := fails + 1; Print("FAIL\n"); end;
   playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self:AssertNil(nil); end } };
   Print("testCase { _proto: NSUnit.protoNSUnitTestCase, TestNil: func () begin self.AssertNil(nil); end }\n");
-  Print("testCase:Run() passing test: ");
+  Print("testCase:Run() passing test:\n");
   result := playground.testCase:Run();
   if result = true and playground.testCase.assertions = 1 and playground.testCase.passes = 1 and playground.testCase.fails = 0 then begin passes := passes + 1; Print("PASS\n") end; else begin fails := fails + 1; Print("FAIL\n"); end;
   playground := { testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end} };
   Print("testCase: { _proto: NSUnit.protoNSUnitTestCase, TestTrue: func () begin self:AssertTrue(nil); end }\n");
-  Print("testCase:Run() failing test: ");
+  Print("testCase:Run() failing test:\n");
   result := playground.testCase:Run();
   if result = nil and playground.testCase.assertions = 1 and playground.testCase.passes = 0 and playground.testCase.fails = 1 then begin passes := passes + 1; Print("PASS\n") end; else begin fails := fails + 1; Print("FAIL\n"); end;
+
+  // protoNSUnitTestSuite:Run() tests
+  Print("testSuite:Run() single passing test:\n");
+  playground := {
+    testSuite: {
+      _proto: NSUnit.protoNSUnitTestSuite,
+      testCases: [
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestPassing: func () begin
+              self:AssertNil(nil);
+            end
+        }
+      ]
+    }
+  };
+  result := playground.testSuite:Run();
+  if result = true
+      and playground.testSuite.assertions = 1
+      and playground.testSuite.passes = 1
+      and playground.testSuite.fails = 0
+  then begin
+    passes := passes + 1;
+    Print("PASS\n");
+  end; else begin
+    fails := fails + 1;
+    Print("FAIL\n");
+  end;
+
+  Print("testSuite:Run() single failing test:\n");
+  playground := {
+    testSuite: {
+      _proto: NSUnit.protoNSUnitTestSuite,
+      testCases: [
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestFailing: func () begin
+              self:AssertTrue(nil);
+            end
+        }
+      ]
+    }
+  };
+  result := playground.testSuite:Run();
+  if result = nil
+      and playground.testSuite.assertions = 1
+      and playground.testSuite.passes = 0
+      and playground.testSuite.fails = 1
+      then begin
+    passes := passes + 1;
+    Print("PASS\n");
+  end; else begin
+    fails := fails + 1;
+    Print("FAIL\n");
+  end;
+
+  Print("testSuite:Run() multiple passing tests:\n");
+  playground := {
+    testSuite: {
+      _proto: NSUnit.protoNSUnitTestSuite,
+      testCases: [
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestPassing: func () begin
+              self:AssertNil(nil);
+            end
+        },
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestAnotherPassing: func () begin
+              self:AssertTrue(true);
+            end
+        }
+      ]
+    }
+  };
+  result := playground.testSuite:Run();
+  if result = true
+      and playground.testSuite.assertions = 2
+      and playground.testSuite.passes = 2
+      and playground.testSuite.fails = 0
+  then begin
+    passes := passes + 1;
+    Print("PASS\n");
+  end; else begin
+    fails := fails + 1;
+    Print("FAIL\n");
+  end;
+
+  Print("testSuite:Run() multiple failing tests:\n");
+  playground := {
+    testSuite: {
+      _proto: NSUnit.protoNSUnitTestSuite,
+      testCases: [
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestFailing: func () begin
+              self:AssertNil(true);
+            end
+        },
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestAnotherFailing: func () begin
+              self:AssertTrue(nil);
+            end
+        }
+      ]
+    }
+  };
+  result := playground.testSuite:Run();
+  if result = nil
+      and playground.testSuite.assertions = 2
+      and playground.testSuite.passes = 0
+      and playground.testSuite.fails = 2
+  then begin
+    passes := passes + 1;
+    Print("PASS\n");
+  end; else begin
+    fails := fails + 1;
+    Print("FAIL\n");
+  end;
+
+  Print("testSuite:Run() mixed passing & failing tests:\n");
+  playground := {
+    testSuite: {
+      _proto: NSUnit.protoNSUnitTestSuite,
+      testCases: [
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestPassing: func () begin
+              self:AssertNil(nil);
+            end
+        },
+        {
+          _proto: NSUnit.protoNSUnitTestCase,
+          TestFailing: func () begin
+              self:AssertTrue(nil);
+            end
+        }
+      ]
+    }
+  };
+  result := playground.testSuite:Run();
+  if result = nil
+      and playground.testSuite.assertions = 2
+      and playground.testSuite.passes = 1
+      and playground.testSuite.fails = 1
+  then begin
+    passes := passes + 1;
+    Print("PASS\n");
+  end; else begin
+    fails := fails + 1;
+    Print("FAIL\n");
+  end;
+
 
   // Summary
   Print("\nPassed:" && passes & "\n");
